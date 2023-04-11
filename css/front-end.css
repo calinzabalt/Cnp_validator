@@ -1,0 +1,40 @@
+.cnp_validator_shorcode{
+    padding: 40px 20px;
+}
+
+.cnp_validator_shorcode .form{
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.cnp_validator_shorcode .form .item{
+    display: block;
+    padding: 10px 0px;
+}
+
+.cnp_validator_shorcode .form .item label{
+    display: block;
+    padding-bottom: 5px;
+    font-family: Arial;
+    font-size: 16px;
+}
+
+.cnp_validator_shorcode .form .item input[type="text"]{
+    width: 100%;
+    height: 45px;
+    padding: 0 10px;
+    box-shadow: none;
+    border: 1px solid #aeaeae;
+    border-radius: 2px;
+}
+
+.cnp_validator_shorcode .form .item input[type="submit"]{
+    background: #000;
+    border: none;
+    width: 100%;
+    height: 45px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}

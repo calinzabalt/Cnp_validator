@@ -69,10 +69,12 @@ function isCnpValid() {
     $cnp = $_POST['cnp'];
 
     // Check if CNP is eqaul with 13 - step 1
-    if (strlen($cnp) == 13) {
+    if (strlen($cnp) == "13") {
         $result = true;
     } else {
         $result = false;
+        echo json_encode(array('valid' => $result));
+        return;
     }
 
     // Check sex and century of birth - step 2
@@ -91,6 +93,8 @@ function isCnpValid() {
         $century = 'foreign';
     } else {
         $result = false;
+        echo json_encode(array('valid' => $result));
+        return;
     }
 
     if ($century != 'foreign') {
@@ -98,12 +102,19 @@ function isCnpValid() {
         $month = intval(substr($cnp, 3, 2));
         $day = intval(substr($cnp, 5, 2));
         $birthdate = date_create($year . '-' . $month . '-' . $day);
+
         if ($sex == 'M' && $first_digit % 2 == 0) {
             $result = false;
+            echo json_encode(array('valid' => $result));
+            return;
         } elseif ($sex == 'F' && $first_digit % 2 == 1) {
             $result = false;
+            echo json_encode(array('valid' => $result));
+            return;
         } elseif (!$birthdate) {
             $result = false;
+            echo json_encode(array('valid' => $result));
+            return;
         } else {
             $result = true;
         }
@@ -119,22 +130,33 @@ function isCnpValid() {
     } else {
         $birth_year = $century . $second_digit;
     }
-
+    
     if ($birth_year) {
-        $birthdate = date_create($birth_year . '-' . $month . '-' . $day);
+        $birthdate_str = $birth_year . '-' . $month . '-' . $day;
+        $birthdate = date_create($birthdate_str);
         if (!$birthdate) {
             $result = false;
+            echo json_encode(array('valid' => $result));
+            return;
+        } elseif ($month == '02' && $day == '29') {
+            $result = false;
+            echo json_encode(array('valid' => $result));
+            return;
         } else {
             $result = true;
         }
     } else {
         $result = false;
+        echo json_encode(array('valid' => $result));
+        return;
     }
 
     // Extract birth month - step 4
     $third_digit = intval(substr($cnp, 3, 2));
     if ($third_digit > 12) {
         $result = false;
+        echo json_encode(array('valid' => $result));
+        return;
     } else {
         $month = str_pad($third_digit, 2, '0', STR_PAD_LEFT);
     }
@@ -163,6 +185,14 @@ function isCnpValid() {
 
     $result = in_array($code, $valid_codes);
 
+    if ($result) {
+        $result = true;
+    } else {
+        $result = false;
+        echo json_encode(array('valid' => $result));
+        return;
+    }
+
     //Validate NNN - step 7
     $nnn = substr($cnp, 7, 3);
 
@@ -170,6 +200,8 @@ function isCnpValid() {
         $result = true;
     } else {
         $result = false;
+        echo json_encode(array('valid' => $result));
+        return;
     }
 
     // Last Step
@@ -194,6 +226,8 @@ function isCnpValid() {
         $result = true;
     } else {
         $result = false;
+        echo json_encode(array('valid' => $result));
+        return;
     }
 
     // Return JSON response
